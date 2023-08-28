@@ -1,7 +1,11 @@
 package frc.trigon.robot.subsystems.steer;
 
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenixpro.controls.PositionVoltage;
+import com.ctre.phoenixpro.hardware.TalonFX;
+import edu.wpi.first.wpilibj2.command.*;
+
+import java.util.function.Supplier;
 
 public class Steer extends SubsystemBase {
 
@@ -15,9 +19,45 @@ public class Steer extends SubsystemBase {
         return INSTANCE;
     }
 
-    p
+    private final TalonFX motor = SteerConstants.MOTOR;
 
     private Steer() {
+    }
+
+    public CommandBase getSetTargetAngle(Supplier <Double> angleSupplier){
+        return new FunctionalCommand(
+                () ->{},
+                () -> setTargetAngle(angleSupplier.get()),
+                (interrupted) -> stop(),
+                () -> false,
+                this
+        );
+    }
+
+    public CommandBase getSetTargetAngleCommand(double targetAngle){
+        return startEnd(
+                () -> setTargetAngle(targetAngle),
+                this::stop
+        );
+    }
+
+    public CommandBase getAngleSequenceCommand(){
+        return new SequentialCommandGroup(
+                getSetTargetAngleCommand(90).withTimeout(3),
+                getSetTargetAngleCommand(180).withTimeout(3),
+                getSetTargetAngleCommand(0).withTimeout(3)
+        );
+    }
+
+    private void setTargetAngle(double angleDegrees){
+        double systemRevolutions = angleDegrees / 360;
+        double motorRevolutions = systemRevolutions * SteerConstants.GEAR_RATIO;
+        PositionVoltage request = new PositionVoltage(motorRevolutions);
+        motor.setControl(request);
+    }
+
+    private void stop(){
+        motor.stopMotor();
     }
 }
 
