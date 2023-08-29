@@ -19,9 +19,15 @@ public class Steer extends SubsystemBase {
     private Steer() {
     }
 
-    public CommandBase getSetTargetAngleCommand(Supplier <Double> angleSupplier){
+    /**
+     * Create a command that sets the target angle from the given supplier.
+     * @param angleSupplier supplies the target angle
+     * @return the command
+     */
+
+    public CommandBase getSetTargetAngleCommand(Supplier<Double> angleSupplier) {
         return new FunctionalCommand(
-                () ->{},
+                () -> {},
                 () -> setTargetAngle(angleSupplier.get()),
                 (interrupted) -> stop(),
                 () -> false,
@@ -29,14 +35,24 @@ public class Steer extends SubsystemBase {
         );
     }
 
-    public CommandBase getSetTargetAngleCommand(double targetAngle){
+    /**
+     * Create a command that sets the target angle.
+     * @param targetAngle target angle
+     * @return the command
+     */
+
+    public CommandBase getSetTargetAngleCommand(double targetAngle) {
         return startEnd(
                 () -> setTargetAngle(targetAngle),
                 this::stop
         );
     }
 
-    public CommandBase getAngleSequenceCommand(){
+    /**
+     * @return a command that turns to angle 90, waits 3 seconds, then turns to angle 180, waits 3 seconds, turns to angle 0
+     */
+
+    public CommandBase getAngleSequenceCommand() {
         return new SequentialCommandGroup(
                 getSetTargetAngleCommand(90).withTimeout(3),
                 getSetTargetAngleCommand(180).withTimeout(3),
@@ -44,14 +60,14 @@ public class Steer extends SubsystemBase {
         );
     }
 
-    private void setTargetAngle(double angleDegrees){
+    private void setTargetAngle(double angleDegrees) {
         double systemRevolutions = angleDegrees / 360;
         double motorRevolutions = systemRevolutions * SteerConstants.GEAR_RATIO;
         PositionVoltage request = new PositionVoltage(motorRevolutions);
         motor.setControl(request);
     }
 
-    private void stop(){
+    private void stop() {
         motor.stopMotor();
     }
 }
