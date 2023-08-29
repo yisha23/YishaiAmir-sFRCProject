@@ -19,7 +19,7 @@ public class Steer extends SubsystemBase {
     private Steer() {
     }
 
-    public CommandBase getSetTargetAngle(Supplier <Double> angleSupplier){
+    public CommandBase getSetTargetAngleCommand(Supplier <Double> angleSupplier){
         return new FunctionalCommand(
                 () ->{},
                 () -> setTargetAngle(angleSupplier.get()),

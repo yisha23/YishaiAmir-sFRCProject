@@ -18,13 +18,15 @@ public class SteerConstants {
     public static final double GEAR_RATIO = 12.8;
 
     static {
-        TalonFXConfiguration config = new TalonFXConfiguration();
+        TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();
 
-        config.Audio.BeepOnBoot = false;
-        config.MotorOutput.Inverted = INVERTED_VALUE;
-        config.MotorOutput.NeutralMode = NEUTRAL_MODE_VALUE;
-        config.Slot0.kP = P;
-        config.Slot0.kI = I;
-        config.Slot0.kD = D;
+        talonFXConfiguration.Audio.BeepOnBoot = false;
+        talonFXConfiguration.MotorOutput.Inverted = INVERTED_VALUE;
+        talonFXConfiguration.MotorOutput.NeutralMode = NEUTRAL_MODE_VALUE;
+        talonFXConfiguration.Slot0.kP = P;
+        talonFXConfiguration.Slot0.kI = I;
+        talonFXConfiguration.Slot0.kD = D;
+
+        MOTOR.getConfigurator().apply(talonFXConfiguration);
     }
 }
