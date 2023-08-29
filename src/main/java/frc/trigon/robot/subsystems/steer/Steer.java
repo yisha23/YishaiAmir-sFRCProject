@@ -45,7 +45,7 @@ public class Steer extends SubsystemBase {
         return new SequentialCommandGroup(
                 getSetTargetAngleCommand(90).withTimeout(3),
                 getSetTargetAngleCommand(180).withTimeout(3),
-                getSetTargetAngleCommand(0).withTimeout(3)
+                getSetTargetAngleCommand(0)
         );
     }
 
