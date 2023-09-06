@@ -16,15 +16,15 @@ public class DifferentialDrive extends SubsystemBase {
 
     /**
      * Creates new tank drive command with a given left and right rates.
-     * @param rightStickYSupplier supplies the rates of the right stick
-     * @param lefStickYSupplier supplies the rates of the left stick
+     * @param rightSpeedSupplier supplies the rates of the right stick
+     * @param leftSpeedSupplier supplies the rates of the left stick
      * @return the command
      */
-    public CommandBase getTankDriveCommand(Supplier<Double> rightStickYSupplier, Supplier<Double> lefStickYSupplier) {
+    public CommandBase getTankDriveCommand(Supplier<Double> rightSpeedSupplier, Supplier<Double> leftSpeedSupplier, boolean squareInput) {
         return new FunctionalCommand(
                 () -> {
                 },
-                () -> arcadeDrive(rightStickYSupplier.get(), lefStickYSupplier.get()),
+                () -> tankDrive(leftSpeedSupplier.get(), rightSpeedSupplier.get(), squareInput),
                 (interrupted) -> stop(),
                 () -> false,
                 this
@@ -33,15 +33,15 @@ public class DifferentialDrive extends SubsystemBase {
 
     /**
      * Creates new arcade drive with a given forward and turn rate.
-     * @param driveStickXSupplier The robot's speed along the X axis. Forward is positive
-     * @param driveStickYSupplier The robot's rotation rate around the Y axis
+     * @param speedSupplier The robot's speed along the X axis. Forward is positive
+     * @param rotationSupplier The robot's rotation rate around the Y axis
      * @return the command
      */
-    public CommandBase getArcadeDriveCommand(Supplier<Double> driveStickXSupplier, Supplier<Double> driveStickYSupplier) {
+    public CommandBase getArcadeDriveCommand(Supplier<Double> speedSupplier, Supplier<Double> rotationSupplier, boolean squareInput) {
         return new FunctionalCommand(
                 () -> {
                 },
-                () -> tankDrive(driveStickXSupplier.get(), driveStickYSupplier.get()),
+                () -> arcadeDrive(speedSupplier.get(), rotationSupplier.get(), squareInput),
                 (interrupted) -> stop(),
                 () -> false,
                 this
@@ -50,32 +50,32 @@ public class DifferentialDrive extends SubsystemBase {
 
     /**
      * Creates a new curvature drive command with a given forward and turn rate, as well as a button for turning in-place.
-     * @param driveStickXSupplier The robot's speed along the X axis. Forward is positive
-     * @param driveStickYSupplier The normalized curvature. Counterclockwise is positive
-     * @param allowTurnInPlaceSupplier  If set,the robot allows to turn-in-place
+     * @param speedSupplier The robot's speed along the X axis. Forward is positive
+     * @param rotationSupplier The normalized curvature. Counterclockwise is positive
+     * @param allowTurnInPlace  If set,the robot allows to turn-in-place
      * @return the command
      */
-    public CommandBase getCurvatureDriveCommand(Supplier<Double> driveStickXSupplier, Supplier<Double> driveStickYSupplier, Supplier<Boolean> allowTurnInPlaceSupplier) {
+    public CommandBase getCurvatureDriveCommand(Supplier<Double> speedSupplier, Supplier<Double> rotationSupplier, boolean allowTurnInPlace) {
         return new FunctionalCommand(
                 () -> {
                 },
-                () -> CurvatureDrive(driveStickXSupplier.get(), driveStickYSupplier.get(), allowTurnInPlaceSupplier.get()),
+                () -> CurvatureDrive(speedSupplier.get(), rotationSupplier.get(), allowTurnInPlace),
                 (interrupted) -> stop(),
                 () -> false,
                 this
         );
     }
 
-    private void tankDrive(double rightStickY, double lefStickY) {
-        differentialDrive.tankDrive(rightStickY, lefStickY);
+    private void tankDrive(double lefSpeed, double rightSpeed, boolean squareInput) {
+        differentialDrive.tankDrive(lefSpeed, rightSpeed, squareInput);
     }
 
-    private void arcadeDrive(double driveStickX, double driveStickY) {
-        differentialDrive.arcadeDrive(driveStickX, driveStickY);
+    private void arcadeDrive(double speed, double rotation, boolean squareInput) {
+        differentialDrive.arcadeDrive(speed, rotation, squareInput);
     }
 
-    private void CurvatureDrive(double driveStickX, double driveStickY, boolean allowTurnInPlace){
-        differentialDrive.curvatureDrive(driveStickX, driveStickY ,allowTurnInPlace);
+    private void CurvatureDrive(double speed, double rotation, boolean allowTurnInPlace){
+        differentialDrive.curvatureDrive(speed, rotation ,allowTurnInPlace);
     }
 
     private void stop() {
