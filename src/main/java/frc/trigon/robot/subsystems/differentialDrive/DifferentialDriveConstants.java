@@ -37,7 +37,5 @@ public class DifferentialDriveConstants {
         RIGHT_REAR_MOTOR.getConfigurator().apply(talonFXConfiguration);
         LEFT_FRONT_MOTOR.getConfigurator().apply(talonFXConfiguration);
         LEFT_REAR_MOTOR.getConfigurator().apply(talonFXConfiguration);
-
-        
     }
 }
