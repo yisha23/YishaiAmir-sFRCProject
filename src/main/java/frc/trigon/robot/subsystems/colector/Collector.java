@@ -18,10 +18,8 @@ public class Collector extends SubsystemBase {
     }
 
     /**
-     *
-     * @return a command that collects
+     * @rturn a command that collects
      */
-
     public CommandBase getCollectCommand() {
         return startEnd(
                 this::collect,
@@ -30,10 +28,8 @@ public class Collector extends SubsystemBase {
     }
 
     /**
-     *
      * @return a command that ejects
      */
-
     public CommandBase getEjectCommand() {
         return startEnd(
                 this::eject,
@@ -42,10 +38,8 @@ public class Collector extends SubsystemBase {
     }
 
     /**
-     *
-     * @return a command that collects and the ejects
+     * @return a command that collects and then ejects
      */
-
     public SequentialCommandGroup getCollectThenEjectCommand() {
         return new SequentialCommandGroup(
                 getCollectCommand(),

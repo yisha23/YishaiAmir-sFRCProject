@@ -8,7 +8,7 @@ import com.ctre.phoenixpro.signals.NeutralModeValue;
 public class CollectorConstants {
     private static final int MOTOR_ID = 0;
     private static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
-    private static final NeutralModeValue neutralModeValue = NeutralModeValue.Coast;
+    private static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Coast;
     static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
 
     static final double
@@ -20,7 +20,7 @@ public class CollectorConstants {
 
         talonFXConfiguration.Audio.BeepOnBoot = false;
         talonFXConfiguration.MotorOutput.Inverted = INVERTED_VALUE;
-        talonFXConfiguration.MotorOutput.NeutralMode = neutralModeValue;
+        talonFXConfiguration.MotorOutput.NeutralMode = NEUTRAL_MODE_VALUE;
 
         MOTOR.getConfigurator().apply(talonFXConfiguration);
     }
