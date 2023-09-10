@@ -15,7 +15,7 @@ public class SteerConstants {
             I = 0,
             D = 0;
 
-    public static final double GEAR_RATIO = 12.8;
+    static final double GEAR_RATIO = 12.8;
 
     static {
         TalonFXConfiguration talonFXConfiguration = new TalonFXConfiguration();

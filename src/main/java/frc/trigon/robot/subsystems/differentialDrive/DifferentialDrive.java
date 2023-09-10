@@ -16,15 +16,16 @@ public class DifferentialDrive extends SubsystemBase {
     /**
      * Creates new tank drive command with the given left and right rates.
      *
-     * @param rightSpeedSupplier supplies the rates of the right stick
-     * @param leftSpeedSupplier  supplies the rates of the left stick
+     * @param rightSpeedSupplier supplies the rates
+     * @param leftSpeedSupplier  supplies the rates
+     * @param squareInputs if set, decreases the input sensitivity at low speeds
      * @return the command
      */
-    public CommandBase getTankDriveCommand(Supplier<Double> rightSpeedSupplier, Supplier<Double> leftSpeedSupplier, boolean squareInput) {
+    public CommandBase getTankDriveCommand(Supplier<Double> rightSpeedSupplier, Supplier<Double> leftSpeedSupplier, boolean squareInputs) {
         return new FunctionalCommand(
                 () -> {
                 },
-                () -> tankDrive(leftSpeedSupplier.get(), rightSpeedSupplier.get(), squareInput),
+                () -> tankDrive(leftSpeedSupplier.get(), rightSpeedSupplier.get(), squareInputs),
                 (interrupted) -> stop(),
                 () -> false,
                 this
@@ -36,13 +37,14 @@ public class DifferentialDrive extends SubsystemBase {
      *
      * @param speedSupplier    the robot's speed along the X axis. Forward is positive
      * @param rotationSupplier the robot's rotation rate around the Y axis
+     * @param squareInputs if set, decreases the input sensitivity at low speeds
      * @return the command
      */
-    public CommandBase getArcadeDriveCommand(Supplier<Double> speedSupplier, Supplier<Double> rotationSupplier, boolean squareInput) {
+    public CommandBase getArcadeDriveCommand(Supplier<Double> speedSupplier, Supplier<Double> rotationSupplier, boolean squareInputs) {
         return new FunctionalCommand(
                 () -> {
                 },
-                () -> arcadeDrive(speedSupplier.get(), rotationSupplier.get(), squareInput),
+                () -> arcadeDrive(speedSupplier.get(), rotationSupplier.get(), squareInputs),
                 (interrupted) -> stop(),
                 () -> false,
                 this
@@ -52,9 +54,9 @@ public class DifferentialDrive extends SubsystemBase {
     /**
      * Creates a new curvature drive command with a given speed and turn rate, as well as a button for turning in-place.
      *
-     * @param speedSupplier    The robot's speed along the X axis. Forward is positive
-     * @param rotationSupplier The normalized curvature. Counterclockwise is positive
-     * @param allowTurnInPlace If set,the robot allows to turn-in-place
+     * @param speedSupplier    the robot's speed along the X axis. Forward is positive
+     * @param rotationSupplier the normalized curvature. Counterclockwise is positive
+     * @param allowTurnInPlace if set,the robot allows to turn-in-place
      * @return the command
      */
     public CommandBase getCurvatureDriveCommand(Supplier<Double> speedSupplier, Supplier<Double> rotationSupplier, boolean allowTurnInPlace) {
@@ -68,12 +70,12 @@ public class DifferentialDrive extends SubsystemBase {
         );
     }
 
-    private void tankDrive(double lefSpeed, double rightSpeed, boolean squareInput) {
-        differentialDrive.tankDrive(lefSpeed, rightSpeed, squareInput);
+    private void tankDrive(double lefSpeed, double rightSpeed, boolean squareInputs) {
+        differentialDrive.tankDrive(lefSpeed, rightSpeed, squareInputs);
     }
 
-    private void arcadeDrive(double speed, double rotation, boolean squareInput) {
-        differentialDrive.arcadeDrive(speed, rotation, squareInput);
+    private void arcadeDrive(double speed, double rotation, boolean squareInputs) {
+        differentialDrive.arcadeDrive(speed, rotation, squareInputs);
     }
 
     private void CurvatureDrive(double speed, double rotation, boolean allowTurnInPlace) {
