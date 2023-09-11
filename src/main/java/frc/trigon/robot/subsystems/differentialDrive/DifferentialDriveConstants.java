@@ -20,11 +20,6 @@ public class DifferentialDriveConstants {
             RIGHT_REAR_MOTOR = new WPI_TalonSRX(RIGHT_REAR_MOTOR_ID),
             LEFT_FRONT_MOTOR = new WPI_TalonSRX(LEFT_FRONT_MOTOR_ID),
             LEFT_REAR_MOTOR = new WPI_TalonSRX(LEFT_REAR_MOTOR_ID);
-    //private static final TalonFX
-                //RIGHT_FRONT_MOTOR = new TalonFX(RIGHT_FRONT_MOTOR_ID),
-                //RIGHT_REAR_MOTOR = new TalonFX(RIGHT_REAR_MOTOR_ID),
-                //LEFT_FRONT_MOTOR = new TalonFX(LEFT_FRONT_MOTOR_ID),
-                //LEFT_REAR_MOTOR = new TalonFX(LEFT_REAR_MOTOR_ID);
     private static final MotorControllerGroup
                 RIGHT_MOTORS = new MotorControllerGroup(RIGHT_FRONT_MOTOR, RIGHT_REAR_MOTOR),
                 LEFT_MOTORS = new MotorControllerGroup(LEFT_FRONT_MOTOR, LEFT_REAR_MOTOR);
@@ -35,7 +30,5 @@ public class DifferentialDriveConstants {
             currentMotor.setInverted(INVERTED_VALUE);
             currentMotor.setNeutralMode(NEUTRAL_MODE_VALUE);
         }
-        RIGHT_FRONT_MOTOR.setInverted(INVERTED_VALUE);
-        RIGHT_FRONT_MOTOR.setNeutralMode(NEUTRAL_MODE_VALUE);
     }
 }
