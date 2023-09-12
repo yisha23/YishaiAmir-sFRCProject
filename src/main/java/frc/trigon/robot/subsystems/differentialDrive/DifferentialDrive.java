@@ -63,7 +63,7 @@ public class DifferentialDrive extends SubsystemBase {
         return new FunctionalCommand(
                 () -> {
                 },
-                () -> CurvatureDrive(speedSupplier.get(), rotationSupplier.get(), allowTurnInPlace),
+                () -> curvatureDrive(speedSupplier.get(), rotationSupplier.get(), allowTurnInPlace),
                 (interrupted) -> stop(),
                 () -> false,
                 this
@@ -78,8 +78,15 @@ public class DifferentialDrive extends SubsystemBase {
         differentialDrive.arcadeDrive(speed, rotation, squareInputs);
     }
 
-    private void CurvatureDrive(double speed, double rotation, boolean allowTurnInPlace) {
+    private void curvatureDrive(double speed, double rotation, boolean allowTurnInPlace) {
         differentialDrive.curvatureDrive(speed, rotation, allowTurnInPlace);
+    }
+
+    private void setTargetAngle(double targetAngle, double currentAngle){
+        DifferentialDriveConstants.turnController.setSetpoint(targetAngle);
+        DifferentialDriveConstants.turnController.setTolerance(DifferentialDriveConstants.toleranceDegrees);
+        double rotationSpeed = DifferentialDriveConstants.turnController.calculate(currentAngle);
+        differentialDrive.arcadeDrive(0, rotationSpeed);
     }
 
     private void stop() {
