@@ -1,5 +1,6 @@
 package frc.trigon.robot.subsystems.differentialDrive;
 
+import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -9,6 +10,7 @@ import java.util.function.Supplier;
 public class DifferentialDrive extends SubsystemBase {
     private final static DifferentialDrive INSTANCE = new DifferentialDrive();
     private final edu.wpi.first.wpilibj.drive.DifferentialDrive differentialDrive = DifferentialDriveConstants.DIFFERENTIAL_DRIVE;
+    private final Pigeon2 pigeon = DifferentialDriveConstants.PIGEON;
 
     private DifferentialDrive() {
     }
@@ -70,6 +72,16 @@ public class DifferentialDrive extends SubsystemBase {
         );
     }
 
+    public CommandBase getSetTargetAngle(Supplier<Double> targetAngle){
+        return new FunctionalCommand(
+                ()-> {},
+                ()-> setTargetAngle(targetAngle.get()),
+                (interrupted)-> stop(),
+                ()-> false,
+                this
+        );
+    }
+
     private void tankDrive(double lefSpeed, double rightSpeed, boolean squareInputs) {
         differentialDrive.tankDrive(lefSpeed, rightSpeed, squareInputs);
     }
@@ -82,10 +94,13 @@ public class DifferentialDrive extends SubsystemBase {
         differentialDrive.curvatureDrive(speed, rotation, allowTurnInPlace);
     }
 
-    private void setTargetAngle(double targetAngle, double currentAngle){
-        DifferentialDriveConstants.turnController.setSetpoint(targetAngle);
-        DifferentialDriveConstants.turnController.setTolerance(DifferentialDriveConstants.toleranceDegrees);
-        double rotationSpeed = DifferentialDriveConstants.turnController.calculate(currentAngle);
+    private double getCurrentAngle(){
+        return pigeon.getAngle();
+    }
+
+    private void setTargetAngle(double targetAngle){
+        DifferentialDriveConstants.TURN_CONTROLLER_PID.setSetpoint(targetAngle);
+        double rotationSpeed = DifferentialDriveConstants.TURN_CONTROLLER_PID.calculate(getCurrentAngle());
         differentialDrive.arcadeDrive(0, rotationSpeed);
     }
 
